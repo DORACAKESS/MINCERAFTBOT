@@ -1,0 +1,4 @@
+/* Tailwind CSS input — compiled to public/css/tailwind.css by `npm run build:css`. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,0 +1,271 @@
+[
+  {
+    "id": "c6d9f5a0498b",
+    "name": "house-storage-cobbleverse-cobblemon",
+    "fileName": "house-storage-cobbleverse-cobblemon.schem",
+    "format": "schematic",
+    "version": "1.21.1",
+    "size": {
+      "x": 23,
+      "y": 15,
+      "z": 17
+    },
+    "blockCount": 2357,
+    "materialCount": 63,
+    "materials": [
+      {
+        "name": "dirt",
+        "count": 427
+      },
+      {
+        "name": "spruce_slab",
+        "count": 229
+      },
+      {
+        "name": "stripped_dark_oak_log",
+        "count": 220
+      },
+      {
+        "name": "grass_block",
+        "count": 202
+      },
+      {
+        "name": "chest",
+        "count": 130
+      },
+      {
+        "name": "spruce_trapdoor",
+        "count": 128
+      },
+      {
+        "name": "stripped_spruce_log",
+        "count": 93
+      },
+      {
+        "name": "vine",
+        "count": 92
+      },
+      {
+        "name": "dark_oak_slab",
+        "count": 74
+      },
+      {
+        "name": "white_stained_glass_pane",
+        "count": 74
+      },
+      {
+        "name": "spruce_planks",
+        "count": 64
+      },
+      {
+        "name": "spruce_stairs",
+        "count": 37
+      },
+      {
+        "name": "dark_oak_stairs",
+        "count": 34
+      },
+      {
+        "name": "deepslate_brick_slab",
+        "count": 31
+      },
+      {
+        "name": "stone_brick_stairs",
+        "count": 30
+      },
+      {
+        "name": "deepslate_tile_slab",
+        "count": 29
+      },
+      {
+        "name": "white_wool",
+        "count": 27
+      },
+      {
+        "name": "birch_log",
+        "count": 25
+      },
+      {
+        "name": "moss_block",
+        "count": 24
+      },
+      {
+        "name": "lantern",
+        "count": 23
+      },
+      {
+        "name": "white_carpet",
+        "count": 23
+      },
+      {
+        "name": "calcite",
+        "count": 21
+      },
+      {
+        "name": "birch_planks",
+        "count": 20
+      },
+      {
+        "name": "dark_oak_planks",
+        "count": 20
+      },
+      {
+        "name": "barrel",
+        "count": 18
+      },
+      {
+        "name": "spruce_wall_sign",
+        "count": 17
+      },
+      {
+        "name": "stripped_birch_log",
+        "count": 17
+      },
+      {
+        "name": "andesite",
+        "count": 16
+      },
+      {
+        "name": "mossy_stone_bricks",
+        "count": 14
+      },
+      {
+        "name": "stone_stairs",
+        "count": 13
+      },
+      {
+        "name": "cobblestone_stairs",
+        "count": 12
+      },
+      {
+        "name": "stone",
+        "count": 12
+      },
+      {
+        "name": "mossy_stone_brick_stairs",
+        "count": 11
+      },
+      {
+        "name": "stone_button",
+        "count": 11
+      },
+      {
+        "name": "birch_wall_sign",
+        "count": 10
+      },
+      {
+        "name": "cracked_stone_bricks",
+        "count": 10
+      },
+      {
+        "name": "spruce_fence",
+        "count": 10
+      },
+      {
+        "name": "stone_brick_wall",
+        "count": 10
+      },
+      {
+        "name": "stone_bricks",
+        "count": 10
+      },
+      {
+        "name": "spruce_fence_gate",
+        "count": 9
+      },
+      {
+        "name": "cobblestone",
+        "count": 7
+      },
+      {
+        "name": "cobblestone_wall",
+        "count": 7
+      },
+      {
+        "name": "mossy_stone_brick_wall",
+        "count": 7
+      },
+      {
+        "name": "flowering_azalea_leaves",
+        "count": 6
+      },
+      {
+        "name": "lilac",
+        "count": 6
+      },
+      {
+        "name": "spruce_door",
+        "count": 6
+      },
+      {
+        "name": "tall_grass",
+        "count": 6
+      },
+      {
+        "name": "wet_sponge",
+        "count": 6
+      },
+      {
+        "name": "azalea_leaves",
+        "count": 4
+      },
+      {
+        "name": "white_bed",
+        "count": 4
+      },
+      {
+        "name": "dark_oak_hanging_sign",
+        "count": 3
+      },
+      {
+        "name": "grindstone",
+        "count": 3
+      },
+      {
+        "name": "chain",
+        "count": 2
+      },
+      {
+        "name": "dead_bush",
+        "count": 2
+      },
+      {
+        "name": "fern",
+        "count": 2
+      },
+      {
+        "name": "short_grass",
+        "count": 2
+      },
+      {
+        "name": "anvil",
+        "count": 1
+      },
+      {
+        "name": "blast_furnace",
+        "count": 1
+      },
+      {
+        "name": "brewing_stand",
+        "count": 1
+      },
+      {
+        "name": "dandelion",
+        "count": 1
+      },
+      {
+        "name": "potted_cherry_sapling",
+        "count": 1
+      },
+      {
+        "name": "smoker",
+        "count": 1
+      },
+      {
+        "name": "spruce_leaves",
+        "count": 1
+      }
+    ],
+    "createdAt": "2026-08-04T11:11:04.049Z"
+  }
+]

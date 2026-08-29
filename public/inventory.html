@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory — MineBot</title>
+  <link rel="stylesheet" href="/css/tailwind.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2334d399%22 stroke-width=%222%22><path d=%22M6 3h12l4 6.5L12 21 2 9.5 6 3z%22/><path d=%22M2 9.5h20M6 3l4 6.5L12 21M18 3l-4 6.5L12 21%22/></svg>" />
+  </head>
+<body class="bg-[#070b12] text-slate-200 font-body antialiased min-h-screen">
+  <script>try{if(localStorage.getItem('mb-sb')==='1')document.body.classList.add('sb-collapsed')}catch(e){}</script>
+
+  <!-- Background decoration -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="bg-grid absolute inset-0"></div>
+    <div class="bg-glow absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"></div>
+    <div class="bg-glow absolute -bottom-52 -right-40 w-[700px] h-[700px] rounded-full" style="animation-delay: 4s; animation-duration: 18s;"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-out flex flex-col bg-slate-900/70 backdrop-blur-xl border-r border-white/5">
+    <!-- Logo -->
+    <div class="sb-header flex items-center gap-3 px-6 h-20 border-b border-white/5 shrink-0">
+      <a href="/" class="sb-logo w-10 h-10 shrink-0 grid place-items-center rounded-xl bg-[#07130c] border border-emerald-400/25 shadow-lg shadow-emerald-500/15 select-none" aria-label="MineBot dashboard home"><svg class="w-8 h-8" viewBox="0 0 40 40" aria-hidden="true">
+            <defs>
+              <linearGradient id="sb-bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0c2015"/><stop offset="1" stop-color="#04100a"/>
+              </linearGradient>
+              <filter id="sb-glow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect x="0.5" y="0.5" width="39" height="39" rx="9" fill="url(#sb-bg)" stroke="rgba(57,255,20,0.3)" stroke-width="1"/>
+            <!-- neon shield -->
+            <path d="M20 8.5 L29.5 12 V19.5 C29.5 27 25.5 32 20 34 C14.5 32 10.5 27 10.5 19.5 V12 Z" fill="rgba(57,255,20,0.07)" stroke="#39ff14" stroke-width="1.5" filter="url(#sb-glow)"/>
+            <path d="M20 8.5 L29.5 12 V19.5 C29.5 27 25.5 32 20 34 C14.5 32 10.5 27 10.5 19.5 V12 Z" fill="none" stroke="#39ff14" stroke-width="1" stroke-linejoin="round"/>
+            <!-- headphones -->
+            <path d="M11 15.5 A 9.5 9.5 0 0 1 29 15.5" fill="none" stroke="#252a2f" stroke-width="3.2" stroke-linecap="round"/>
+            <rect x="8" y="15" width="4.5" height="11" rx="2.2" fill="#272c31" stroke="#43494f" stroke-width="0.8"/>
+            <rect x="27.5" y="15" width="4.5" height="11" rx="2.2" fill="#272c31" stroke="#43494f" stroke-width="0.8"/>
+            <path d="M30.6 19 C33.4 21.2 33.4 24 31.6 26.4" fill="none" stroke="#2b3035" stroke-width="2.2" stroke-linecap="round"/>
+            <rect x="30.5" y="26" width="2.8" height="2.4" rx="1.2" fill="#39ff14" filter="url(#sb-glow)"/>
+            <!-- voxel head (creeper-style face) -->
+            <rect x="12" y="13" width="16" height="14" fill="#3fae49" stroke="#1f7a2c" stroke-width="0.7"/>
+            <rect x="12" y="13" width="16" height="2" fill="#ffffff" opacity="0.1"/>
+            <rect x="14" y="15" width="2" height="2" fill="#2f8f3a" opacity="0.55"/>
+            <rect x="24" y="15" width="2" height="2" fill="#2f8f3a" opacity="0.55"/>
+            <g fill="#101418">
+              <rect x="16" y="17" width="4" height="4"/>
+              <rect x="24" y="17" width="4" height="4"/>
+              <rect x="20" y="21" width="4" height="2"/>
+              <rect x="16" y="23" width="8" height="4"/>
+            </g>
+          </svg></a>
+      <div class="sb-brand min-w-0 flex-1">
+        <p class="font-pixel text-xs text-emerald-300 tracking-wide">MINEBOT</p>
+        <p class="text-[11px] text-slate-500 mt-1.5 truncate">Dashboard v1.0</p>
+      </div>
+      <button id="sb-collapse-btn" type="button" class="sb-collapse-btn w-8 h-8 shrink-0 grid place-items-center rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" title="Collapse sidebar" aria-label="Toggle sidebar" aria-expanded="true">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+      </button>
+    </div>
+
+    <!-- Nav -->
+        <nav class="sb-nav flex-1 px-4 py-5 space-y-1.5 overflow-y-auto">
+      <p class="sb-group-label">Main</p>
+      <a href="/" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-home"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg></span> Dashboard
+      </a>
+      <p class="sb-group-label">World</p>
+      <a href="/map.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-map-2"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" />
+  <path d="M9 4v13" />
+  <path d="M15 7v5.5" />
+  <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879" />
+  <path d="M19 18v.01" />
+</svg></span> 3D Map
+      </a>
+      <a href="/map2d.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M12 3l0 2" />
+  <path d="M12 19l0 2" />
+  <path d="M3 12l2 0" />
+  <path d="M19 12l2 0" />
+</svg></span> 2D Map
+      </a>
+      <p class="sb-group-label">Items</p>
+      <a href="/inventory.html" data-nav class="nav-item active">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-backpack"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 18v-6a6 6 0 0 1 6 -6h2a6 6 0 0 1 6 6v6a3 3 0 0 1 -3 3h-8a3 3 0 0 1 -3 -3" />
+  <path d="M10 6v-1a2 2 0 1 1 4 0v1" />
+  <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+  <path d="M11 10h2" />
+</svg></span> Inventory
+      </a>
+      <p class="sb-group-label">Intelligence</p>
+      <a href="/ai.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-brain"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+  <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+  <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+  <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+  <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+  <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+</svg></span> AI Control
+      </a>
+      <a href="/commander.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-bolt"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
+</svg></span> Commander
+      </a>
+      <p class="sb-group-label">Tools</p>
+      <a href="/console.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-terminal-2"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" />
+</svg></span> Console
+      </a>
+      <a href="/stats.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Statistics
+      </a>
+      <a href="/building.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg></span> Building
+      </a>
+      <a href="/controls.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M2 8a2 2 0 0 1 2 -2h16a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-16a2 2 0 0 1 -2 -2l0 -8" />
+  <path d="M6 12h4m-2 -2v4" />
+  <path d="M15 11l0 .01" />
+  <path d="M18 13l0 .01" />
+</svg></span> Controls
+      </a>
+      <p class="sb-group-label">System</p>
+      <a href="/settings.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Settings
+      </a>
+    </nav>
+
+    <!-- Footer status -->
+    <div class="sb-footer px-4 py-5 border-t border-white/5 shrink-0 space-y-3">
+      <div class="sb-footer-card rounded-xl bg-white/[0.03] border border-white/5 p-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-slate-400">Dashboard server</span>
+          <span id="conn-pill-sidebar" class="text-xs font-bold text-slate-500">○ Offline</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2">Node.js + Express + Socket.io</p>
+      </div>
+      <div class="sb-footer-user rounded-xl bg-white/[0.03] border border-white/5 p-3 flex items-center justify-between gap-2">
+        <span id="user-badge" class="text-xs text-slate-300 truncate">Loading…</span>
+        <button id="logout-btn" class="btn btn-ghost text-xs px-3 py-1.5 shrink-0">
+          <svg class="sb-logout-ico w-0 h-0 overflow-hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+          <span class="sb-logout-txt">Logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile top bar -->
+  <header class="md:hidden fixed top-0 inset-x-0 z-40 h-16 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4">
+    <button id="menu-btn" class="w-10 h-10 grid place-items-center rounded-lg hover:bg-white/5 transition-colors text-slate-300" aria-label="Toggle menu">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <span class="font-pixel text-xs text-emerald-300">MINEBOT</span>
+    <span id="conn-pill-mobile" class="text-xs font-bold text-slate-500">○</span>
+  </header>
+
+  <!-- Mobile sidebar overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden hidden"></div>
+
+  <!-- Main content -->
+  <main class="md:pl-72 pt-16 md:pt-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12 space-y-6">
+
+      <!-- Page header -->
+      <section class="animate-fade-up">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-emerald-400 font-bold">Bot Backpack</p>
+            <h1 class="mt-2.5 text-3xl lg:text-4xl font-extrabold text-white tracking-tight">Inventory</h1>
+            <p class="mt-2.5 text-sm text-slate-400 max-w-lg leading-relaxed">
+              Everything the bot is carrying, live. Hover an item for details — enchantments, durability and contents. Click a <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-box"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+  <path d="M12 12l8 -4.5" />
+  <path d="M12 12l0 9" />
+  <path d="M12 12l-8 -4.5" />
+</svg> shulker box to open its contents in a full viewer.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="target-line" class="text-xs text-slate-500 max-w-[220px] truncate hidden sm:block">No bot configured yet</span>
+            <div class="status-pill" id="status-pill">
+              <span class="status-dot"></span>
+              <span id="status-text">STOPPED</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inventory card -->
+      <section class="animate-fade-up" style="animation-delay: 100ms">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-backpack"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 18v-6a6 6 0 0 1 6 -6h2a6 6 0 0 1 6 6v6a3 3 0 0 1 -3 3h-8a3 3 0 0 1 -3 -3" />
+  <path d="M10 6v-1a2 2 0 1 1 4 0v1" />
+  <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+  <path d="M11 10h2" />
+</svg> Bot Inventory</h2>
+              <p class="card-sub">Hover for details · drag to rearrange · click a <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-box"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+  <path d="M12 12l8 -4.5" />
+  <path d="M12 12l0 9" />
+  <path d="M12 12l-8 -4.5" />
+</svg> shulker box to look inside it.</p>
+            </div>
+            <span id="inv-count" class="badge badge-slate shrink-0">0 items</span>
+          </div>
+
+          <div class="p-4 sm:p-6">
+            <!-- Offline placeholder -->
+            <div id="inv-placeholder" class="py-14 flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/5 grid place-items-center text-3xl animate-bounce-slow"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-backpack"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 18v-6a6 6 0 0 1 6 -6h2a6 6 0 0 1 6 6v6a3 3 0 0 1 -3 3h-8a3 3 0 0 1 -3 -3" />
+  <path d="M10 6v-1a2 2 0 1 1 4 0v1" />
+  <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+  <path d="M11 10h2" />
+</svg></div>
+              <h3 class="mt-5 text-lg font-bold text-white">The backpack is empty</h3>
+              <p class="mt-2 text-sm text-slate-400 max-w-md leading-relaxed">
+                The inventory appears as soon as the bot is <span class="text-emerald-400 font-semibold">in a server</span>.
+                Start the bot from the dashboard and come back to see its items.
+              </p>
+              <a href="/" class="btn btn-primary mt-6">Go to Dashboard</a>
+            </div>
+
+            <!-- Live inventory -->
+            <div id="inv-panel" class="hidden">
+
+              <!-- Search + filter toolbar -->
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <div class="relative flex-1 min-w-[200px] max-w-sm">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span>
+                  <input id="inv-search" type="text" class="input" placeholder="Search items…" autocomplete="off" />
+                </div>
+                <select id="inv-rarity" class="input select !w-44" style="padding-left:0.9rem">
+                  <option value="">All rarities</option>
+                  <option value="common">Common</option>
+                  <option value="uncommon">Uncommon</option>
+                  <option value="rare">Rare</option>
+                  <option value="epic">Epic</option>
+                  <option value="legendary">Legendary</option>
+                </select>
+                <span id="inv-match-count" class="text-xs text-slate-500"></span>
+                <button id="inv-filter-clear" class="btn btn-ghost text-xs px-3 py-2 hidden"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" />
+</svg> Clear</button>
+              </div>
+
+              <div class="flex flex-col lg:flex-row gap-6 lg:items-start">
+
+                <!-- Armor + offhand -->
+                <div class="shrink-0 flex flex-row lg:flex-col gap-3">
+                  <div class="rounded-xl bg-white/[0.03] border border-white/5 p-2.5">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 text-center mb-2">Armor</p>
+                    <div id="armor-grid" class="flex lg:flex-col gap-2"></div>
+                  </div>
+                  <div class="rounded-xl bg-white/[0.03] border border-white/5 p-2.5">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 text-center mb-2">Offhand</p>
+                    <div id="offhand-grid" class="flex lg:flex-col gap-2"></div>
+                  </div>
+                </div>
+
+                <!-- Main grid + hotbar -->
+                <div class="flex-1 min-w-0">
+                  <div class="rounded-xl bg-white/[0.03] border border-white/5 p-2.5 sm:p-4">
+                    <div id="main-grid" class="grid grid-cols-9 gap-1.5 sm:gap-2"></div>
+                  </div>
+                  <div class="rounded-xl bg-white/[0.03] border border-white/5 p-2.5 sm:p-4 mt-3">
+                    <div class="flex items-center justify-between mb-2 px-0.5">
+                      <p class="text-[10px] uppercase tracking-widest text-slate-500">Hotbar</p>
+                      <p class="text-[10px] text-slate-600">Selected slot <span id="selected-slot" class="text-emerald-400 font-bold">1</span></p>
+                    </div>
+                    <div id="hotbar-grid" class="grid grid-cols-9 gap-1.5 sm:gap-2"></div>
+                  </div>
+                </div>
+
+                <!-- Health / food -->
+                <div class="shrink-0 w-full lg:w-40 rounded-xl bg-white/[0.03] border border-white/5 p-4 space-y-4">
+                  <p class="text-[10px] uppercase tracking-widest text-slate-500">Vitals</p>
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-slate-300"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-heart"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+</svg> Health</span>
+                      <span id="health-num" class="font-bold text-red-300">—</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-slate-800 mt-2 overflow-hidden">
+                      <div id="health-bar" class="h-full rounded-full bg-gradient-to-r from-red-500 to-rose-400 transition-all duration-500" style="width:0%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-slate-300"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-meat"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13.62 8.382l1.966 -1.967a2 2 0 1 1 3.414 -1.415a2 2 0 1 1 -1.413 3.414l-1.82 1.821" />
+  <path d="M5.904 18.596c2.733 2.734 5.9 4 7.07 2.829c1.172 -1.172 -.094 -4.338 -2.828 -7.071c-2.733 -2.734 -5.9 -4 -7.07 -2.829c-1.172 1.172 .094 4.338 2.828 7.071" />
+  <path d="M7.5 16l1 1" />
+  <path d="M12.975 21.425c3.905 -3.906 4.855 -9.288 2.121 -12.021c-2.733 -2.734 -8.115 -1.784 -12.02 2.121" />
+</svg> Food</span>
+                      <span id="food-num" class="font-bold text-amber-300">—</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-slate-800 mt-2 overflow-hidden">
+                      <div id="food-bar" class="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-500" style="width:0%"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-slate-300"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-star"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+</svg> Level</span>
+                      <span id="xp-level" class="font-bold text-emerald-300">—</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-slate-800 mt-2 overflow-hidden">
+                      <div id="xp-bar" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-lime-400 transition-all duration-500" style="width:0%"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-1">XP <span id="xp-points" class="text-slate-400 font-semibold">—</span></p>
+                  </div>
+                  <div>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 mb-2"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-flask"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 3l6 0" />
+  <path d="M10 9l4 0" />
+  <path d="M10 3v6l-4 11a.7 .7 0 0 0 .5 1h11a.7 .7 0 0 0 .5 -1l-4 -11v-6" />
+</svg> Potion effects</p>
+                    <div id="effects-list" class="space-y-1.5 max-h-32 overflow-y-auto pr-1"></div>
+                    <p id="effects-empty" class="text-[11px] text-slate-600">No active effects</p>
+                  </div>
+                  <p class="text-[11px] text-slate-500 leading-relaxed">Saturation <span id="saturation-num" class="text-slate-300 font-semibold">—</span></p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="animate-fade-up" style="animation-delay: 160ms">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-tool"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 10h3v-3l-3.5 -3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1 -3 3l-6 -6a6 6 0 0 1 -8 -8l3.5 3.5" />
+</svg> Inventory Tools</h2>
+              <p class="card-sub">Drop items and let the bot manage its own backpack.</p>
+            </div>
+            <span id="guest-note" class="badge badge-amber hidden shrink-0">Guest — view only</span>
+          </div>
+
+          <div class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+
+            <!-- Drop all -->
+            <div class="rounded-xl bg-white/[0.03] border border-white/5 p-4 flex flex-col">
+              <p class="text-sm font-bold text-white"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 7l16 0" />
+  <path d="M10 11l0 6" />
+  <path d="M14 11l0 6" />
+  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+</svg> Drop everything</p>
+              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed flex-1">Tosses every item the bot is carrying onto the ground. There is no undo.</p>
+              <button id="drop-all-btn" class="btn btn-stop mt-4" disabled>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                Drop All Items
+              </button>
+            </div>
+
+            <!-- Auto drop -->
+            <div class="rounded-xl bg-white/[0.03] border border-white/5 p-4 flex flex-col">
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-sm font-bold text-white"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-recycle"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 17l-2 2l2 2" />
+  <path d="M10 19h9a2 2 0 0 0 1.75 -2.75l-.55 -1" />
+  <path d="M8.536 11l-.732 -2.732l-2.732 .732" />
+  <path d="M7.804 8.268l-4.5 7.794a2 2 0 0 0 1.506 2.89l1.141 .024" />
+  <path d="M15.464 11l2.732 .732l.732 -2.732" />
+  <path d="M18.196 11.732l-4.5 -7.794a2 2 0 0 0 -3.256 -.14l-.591 .976" />
+</svg> Auto-drop item</p>
+                <label class="switch shrink-0" title="Automatically drop a named item">
+                  <input id="autodrop-enabled" type="checkbox" />
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Keeps throwing away every matching stack while the bot is in a server.</p>
+              <div class="mt-3 flex gap-2">
+                <input id="autodrop-name" class="input" placeholder="e.g. cobblestone" maxlength="64" style="padding-left:0.9rem" />
+              </div>
+              <button id="autodrop-save" class="btn btn-amber mt-3">Save Auto-drop</button>
+            </div>
+
+            <!-- Auto eat -->
+            <div class="rounded-xl bg-white/[0.03] border border-white/5 p-4 flex flex-col">
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-sm font-bold text-white"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-bread"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 4a3 3 0 0 1 2 5.235v8.765a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-8.764a3 3 0 0 1 1.824 -5.231h12.176v-.005" />
+</svg> Auto-eat</p>
+                <label class="switch shrink-0" title="Eat food when hunger gets low">
+                  <input id="autoeat-enabled" type="checkbox" />
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed flex-1">The bot equips and eats food automatically when hunger drops to the threshold.</p>
+              <div class="mt-3">
+                <label for="autoeat-threshold" class="label !mb-1">Eat when food is at or below</label>
+                <input id="autoeat-threshold" type="number" class="input" value="10" min="1" max="19" style="padding-left:0.9rem" />
+              </div>
+              <button id="autoeat-save" class="btn btn-blue mt-3">Save Auto-eat</button>
+            </div>
+
+            <!-- Auto tool -->
+            <div class="rounded-xl bg-white/[0.03] border border-white/5 p-4 flex flex-col">
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-sm font-bold text-white"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-tool"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 10h3v-3l-3.5 -3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1 -3 3l-6 -6a6 6 0 0 1 -8 -8l3.5 3.5" />
+</svg> Auto-tool</p>
+                <label class="switch shrink-0" title="Equip the best pickaxe/sword automatically">
+                  <input id="autotool-enabled" type="checkbox" />
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed flex-1">
+                The bot equips the best tool by material before digging or fighting.
+              </p>
+              <div class="mt-3 space-y-1.5">
+                <p class="text-[11px] text-slate-400"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-pick"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 8l-9.383 9.418a2.091 2.091 0 0 0 0 2.967a2.11 2.11 0 0 0 2.976 0l9.407 -9.385" />
+  <path d="M9 3h4.586a1 1 0 0 1 .707 .293l6.414 6.414a1 1 0 0 1 .293 .707v4.586a2 2 0 1 1 -4 0v-3l-5 -5h-3a2 2 0 1 1 0 -4" />
+</svg> <span class="text-slate-300">Digging:</span> best pickaxe / axe / shovel for the block</p>
+                <p class="text-[11px] text-slate-400"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-swords"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 3v5l-11 9l-4 4l-3 -3l4 -4l9 -11l5 0" />
+  <path d="M5 13l6 6" />
+  <path d="M14.32 17.32l3.68 3.68l3 -3l-3.365 -3.365" />
+  <path d="M10 5.5l-2 -2.5h-5v5l3 2.5" />
+</svg> <span class="text-slate-300">Combat:</span> best sword in the inventory</p>
+              </div>
+              <button id="autotool-save" class="btn btn-purple mt-3">Save Auto-tool</button>
+            </div>
+
+            <!-- Auto armor -->
+            <div class="rounded-xl bg-white/[0.03] border border-white/5 p-4 flex flex-col">
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-sm font-bold text-white"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-shield"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+</svg> Auto-armor</p>
+                <label class="switch shrink-0" title="Automatically wear the best armor pieces">
+                  <input id="autoarmor-enabled" type="checkbox" />
+                  <span class="switch-slider"></span>
+                </label>
+              </div>
+              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed flex-1">
+                The bot wears its best helmet, chestplate, leggings and boots by material — auto-upgrading whenever it picks up something better.
+              </p>
+              <div class="mt-3 space-y-1.5">
+                <p class="text-[11px] text-slate-400"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-cap-rounded"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M20 6h-9a6 6 0 1 0 0 12h9" />
+  <path d="M13 12a2 2 0 1 1 -4 0a2 2 0 0 1 4 0" />
+  <path d="M13 12h7" />
+</svg> <span class="text-slate-300">Helmet / Chestplate / Leggings / Boots</span></p>
+                <p class="text-[11px] text-slate-400"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-trophy"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 21l8 0" />
+  <path d="M12 17l0 4" />
+  <path d="M7 4l10 0" />
+  <path d="M17 4v8a5 5 0 0 1 -10 0v-8" />
+  <path d="M3 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+</svg> <span class="text-slate-300">Leather &lt; Gold/Chain &lt; Iron &lt; Diamond &lt; Netherite</span></p>
+              </div>
+              <button id="autoarmor-save" class="btn btn-cyan mt-3">Save Auto-armor</button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <footer class="text-center text-xs text-slate-600 pt-2 pb-4">
+        Built with Express.js · Socket.io · Tailwind CSS · Mineflayer <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-pick"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 8l-9.383 9.418a2.091 2.091 0 0 0 0 2.967a2.11 2.11 0 0 0 2.976 0l9.407 -9.385" />
+  <path d="M9 3h4.586a1 1 0 0 1 .707 .293l6.414 6.414a1 1 0 0 1 .293 .707v4.586a2 2 0 1 1 -4 0v-3l-5 -5h-3a2 2 0 1 1 0 -4" />
+</svg>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Item tooltip -->
+  <div id="tooltip" class="fixed z-50 hidden pointer-events-none">
+    <div class="rounded-xl bg-[#0a0f18]/95 border border-white/10 shadow-2xl shadow-black/60 backdrop-blur-md px-4 py-3 min-w-[15rem] max-w-[19rem]">
+      <div id="tooltip-body"></div>
+    </div>
+  </div>
+
+  <!-- Selected-item action bar (click an item in the grid) -->
+  <div id="select-bar" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-xl">
+    <div class="rounded-2xl bg-[#0a0f18]/95 border border-emerald-400/25 shadow-2xl shadow-emerald-500/10 backdrop-blur-xl px-4 py-3 flex items-center gap-3 flex-wrap animate-fade-up">
+      <div class="min-w-0 flex-1">
+        <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold">Selected</p>
+        <p id="select-name" class="text-sm font-bold text-white truncate">—</p>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <button data-act="drop1" class="btn btn-stop text-xs px-3 py-2" title="Drop a single item">Drop 1</button>
+        <button data-act="dropall" class="btn btn-stop text-xs px-3 py-2" title="Drop every stack of this item">Drop all</button>
+        <button data-act="hand" class="btn btn-cyan text-xs px-3 py-2" title="Hold the item in the bot's hand"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-hand-grab"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 11v-3.5a1.5 1.5 0 0 1 3 0v2.5" />
+  <path d="M11 9.5v-3a1.5 1.5 0 0 1 3 0v3.5" />
+  <path d="M14 7.5a1.5 1.5 0 0 1 3 0v2.5" />
+  <path d="M17 9.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7l-.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" />
+</svg> Take in hand</button>
+        <button data-act="hotbar" class="btn btn-ghost text-xs px-3 py-2" title="Move to the first free hotbar slot"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-box"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+  <path d="M12 12l8 -4.5" />
+  <path d="M12 12l0 9" />
+  <path d="M12 12l-8 -4.5" />
+</svg> To hotbar</button>
+        <button data-act="close" class="w-7 h-7 grid place-items-center rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-colors" title="Deselect"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" />
+</svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drop-all confirm modal -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="confirm-backdrop"></div>
+    <div class="modal-card relative w-full max-w-md rounded-2xl bg-slate-900 border border-red-400/25 p-6 shadow-2xl">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl grid place-items-center bg-red-500/15 border border-red-400/30 text-xl"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 7l16 0" />
+  <path d="M10 11l0 6" />
+  <path d="M14 11l0 6" />
+  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+</svg></div>
+        <div>
+          <h3 class="text-base font-extrabold text-white">Drop everything?</h3>
+          <p class="text-xs text-slate-400 mt-0.5">Every item in the bot's inventory will be tossed.</p>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-slate-300 leading-relaxed">This <span class="text-red-300 font-semibold">cannot be undone</span>. If a shulker box is dropped, everything inside it drops too.</p>
+      <div class="mt-5 flex gap-3">
+        <button id="confirm-yes" class="btn btn-stop flex-1">Yes, drop all</button>
+        <button id="confirm-no" class="btn btn-ghost flex-1">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shulker box contents viewer -->
+  <div id="shulker-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" role="dialog" aria-modal="true" aria-label="Shulker contents">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="shulker-backdrop"></div>
+    <div class="modal-card relative w-full max-w-lg rounded-2xl bg-slate-900 border border-purple-400/25 p-5 sm:p-6 shadow-2xl animate-fade-up">
+      <div class="flex items-start gap-3">
+        <div class="w-11 h-11 shrink-0 rounded-xl grid place-items-center bg-purple-500/15 border border-purple-400/30 text-xl"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-box"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+  <path d="M12 12l8 -4.5" />
+  <path d="M12 12l0 9" />
+  <path d="M12 12l-8 -4.5" />
+</svg></div>
+        <div class="min-w-0 flex-1">
+          <h3 id="shulker-title" class="text-base font-extrabold text-white truncate">Shulker Box</h3>
+          <p id="shulker-sub" class="text-xs text-slate-400 mt-0.5">27 slots</p>
+        </div>
+        <button id="shulker-close" type="button" class="w-8 h-8 shrink-0 grid place-items-center rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-colors" title="Close (Esc)" aria-label="Close"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" />
+</svg></button>
+      </div>
+      <div class="mt-5 rounded-xl bg-white/[0.03] border border-white/5 p-3">
+        <div id="shulker-grid" class="grid grid-cols-9 gap-1.5 sm:gap-2"></div>
+        <p id="shulker-empty" class="hidden text-center text-sm text-slate-500 py-10"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-inbox"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
+  <path d="M4 13h3l3 3h4l3 -3h3" />
+</svg> This shulker is empty</p>
+      </div>
+      <p class="mt-3 text-[11px] text-slate-500">Hover an item for details. Close with <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" />
+</svg>, the backdrop, or Esc.</p>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toasts" class="fixed top-5 right-5 z-50 space-y-3 w-80 max-w-[calc(100vw-2.5rem)] pointer-events-none"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/icons.js"></script>
+  <script src="/js/inventory.js"></script>
+  <script src="/js/topbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D View — MineBot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #0a0e17; font-family: 'Inter', system-ui, sans-serif; }
+    canvas { display: block; }
+
+    /* Floating glass control chips */
+    .chip {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .45rem .8rem; border-radius: 9999px;
+      background: rgba(10, 15, 24, .72); border: 1px solid rgba(255,255,255,.09);
+      color: #cbd5e1; font-size: 11px; font-weight: 600;
+      backdrop-filter: blur(10px); box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      user-select: none; cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .chip:hover { transform: translateY(-1px); border-color: rgba(52,211,153,.45); background: rgba(10,15,24,.9); }
+    .chip:active { transform: translateY(0) scale(.98); }
+    .chip .dot { width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+    .tb-ico { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -.18em; flex-shrink: 0; }
+    .chip-toggle.on { border-color: rgba(52,211,153,.6); background: rgba(16,40,32,.85); color: #a7f3d0; }
+
+    .mb-btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .5rem .85rem; border-radius: .75rem;
+      background: linear-gradient(135deg, #10b981, #059669); color: #fff;
+      font-size: 12px; font-weight: 700; border: none; cursor: pointer;
+      box-shadow: 0 8px 22px rgba(16,185,129,.35);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+    }
+    .mb-btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+    .mb-btn:active { transform: translateY(0) scale(.97); }
+    .mb-btn.ghost { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); box-shadow: none; color: #cbd5e1; }
+    .mb-btn.ghost:hover { border-color: rgba(52,211,153,.45); }
+
+    #mb-stats { font-variant-numeric: tabular-nums; }
+    .pulse-dot { animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: .55; transform: scale(.82);} }
+    .fade-in { animation: fadeIn .35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- Overlay UI (sits above the 3D canvas) -->
+  <div class="fade-in" style="position:fixed; inset:0; z-index:20; pointer-events:none;">
+
+    <!-- Top bar -->
+    <div style="position:absolute; top:14px; left:14px; right:14px; display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+      <!-- Legend -->
+      <div style="display:flex; gap:6px; flex-wrap:wrap; pointer-events:auto;">
+        <span class="chip"><span class="dot" style="color:#34d399; background:#34d399;"></span>Bot</span>
+        <span class="chip"><span class="dot" style="color:#60a5fa; background:#60a5fa;"></span>Player</span>
+        <span class="chip"><span class="dot" style="color:#ef4444; background:#ef4444;"></span>Hostile</span>
+        <span class="chip"><span class="dot" style="color:#4ade80; background:#4ade80;"></span>Passive</span>
+      </div>
+
+      <!-- Controls -->
+      <div style="display:flex; gap:6px; flex-wrap:wrap; pointer-events:auto;">
+        <button id="mb-move-btn" class="mb-btn" title="Jump the camera to the bot">Move to bot</button>
+        <button id="mb-follow-btn" class="mb-btn ghost" title="Keep the camera above the bot as it moves">Follow bot</button>
+        <button id="mb-locate-btn" class="mb-btn ghost on" title="Show coloured sky beams pointing at every entity">Locate</button>
+        <button id="mb-reload-btn" class="mb-btn ghost" title="Reload the 3D view">↻</button>
+      </div>
+    </div>
+
+    <!-- Bottom-left status -->
+    <div id="mb-stats" style="position:absolute; left:14px; bottom:14px; pointer-events:none; font-size:11px; color:#64748b; background:rgba(10,15,24,.6); border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:8px 12px; backdrop-filter:blur(8px); line-height:1.6;">
+      <div><span class="pulse-dot" style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#34d399; margin-right:6px;"></span>Waiting for the viewer…</div>
+    </div>
+
+    <!-- Bottom-right hint -->
+    <div style="position:absolute; right:14px; bottom:14px; pointer-events:none; font-size:10.5px; color:#475569; text-align:right; background:rgba(10,15,24,.55); border:1px solid rgba(255,255,255,.06); border-radius:10px; padding:7px 11px; backdrop-filter:blur(8px);">
+      W/A/S/D move · Shift = fast · mouse drag rotate · scroll zoom
+    </div>
+  </div>
+
+  <!-- Patched prismarine-viewer client (renders the world) -->
+  <script src="/viewer/index.js"></script>
+  <!-- Shared inline-icon helper (loads before viewer-patch.js which uses it) -->
+  <script src="/js/icons.js"></script>
+  <!-- Our enhancements: markers, move-to-bot, locate beams, perf -->
+  <script src="/js/viewer-patch.js"></script>
+</body>
+</html>

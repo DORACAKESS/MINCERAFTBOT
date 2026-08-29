@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controls — MineBot</title>
+  <link rel="stylesheet" href="/css/tailwind.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2334d399%22 stroke-width=%222%22><path d=%22M6 3h12l4 6.5L12 21 2 9.5 6 3z%22/><path d=%22M2 9.5h20M6 3l4 6.5L12 21M18 3l-4 6.5L12 21%22/></svg>" />
+  </head>
+<body class="bg-[#070b12] text-slate-200 font-body antialiased min-h-screen">
+  <script>try{if(localStorage.getItem('mb-sb')==='1')document.body.classList.add('sb-collapsed')}catch(e){}</script>
+
+  <!-- Background decoration -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="bg-grid absolute inset-0"></div>
+    <div class="bg-glow absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"></div>
+    <div class="bg-glow absolute -bottom-52 -right-40 w-[700px] h-[700px] rounded-full" style="animation-delay: 4s; animation-duration: 18s;"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-out flex flex-col bg-slate-900/70 backdrop-blur-xl border-r border-white/5">
+    <!-- Logo -->
+    <div class="sb-header flex items-center gap-3 px-6 h-20 border-b border-white/5 shrink-0">
+      <a href="/" class="sb-logo w-10 h-10 shrink-0 grid place-items-center rounded-xl bg-[#07130c] border border-emerald-400/25 shadow-lg shadow-emerald-500/15 select-none" aria-label="MineBot dashboard home"><svg class="w-8 h-8" viewBox="0 0 40 40" aria-hidden="true">
+            <defs>
+              <linearGradient id="sb-bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0c2015"/><stop offset="1" stop-color="#04100a"/>
+              </linearGradient>
+              <filter id="sb-glow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect x="0.5" y="0.5" width="39" height="39" rx="9" fill="url(#sb-bg)" stroke="rgba(57,255,20,0.3)" stroke-width="1"/>
+            <!-- neon shield -->
+            <path d="M20 8.5 L29.5 12 V19.5 C29.5 27 25.5 32 20 34 C14.5 32 10.5 27 10.5 19.5 V12 Z" fill="rgba(57,255,20,0.07)" stroke="#39ff14" stroke-width="1.5" filter="url(#sb-glow)"/>
+            <path d="M20 8.5 L29.5 12 V19.5 C29.5 27 25.5 32 20 34 C14.5 32 10.5 27 10.5 19.5 V12 Z" fill="none" stroke="#39ff14" stroke-width="1" stroke-linejoin="round"/>
+            <!-- headphones -->
+            <path d="M11 15.5 A 9.5 9.5 0 0 1 29 15.5" fill="none" stroke="#252a2f" stroke-width="3.2" stroke-linecap="round"/>
+            <rect x="8" y="15" width="4.5" height="11" rx="2.2" fill="#272c31" stroke="#43494f" stroke-width="0.8"/>
+            <rect x="27.5" y="15" width="4.5" height="11" rx="2.2" fill="#272c31" stroke="#43494f" stroke-width="0.8"/>
+            <path d="M30.6 19 C33.4 21.2 33.4 24 31.6 26.4" fill="none" stroke="#2b3035" stroke-width="2.2" stroke-linecap="round"/>
+            <rect x="30.5" y="26" width="2.8" height="2.4" rx="1.2" fill="#39ff14" filter="url(#sb-glow)"/>
+            <!-- voxel head (creeper-style face) -->
+            <rect x="12" y="13" width="16" height="14" fill="#3fae49" stroke="#1f7a2c" stroke-width="0.7"/>
+            <rect x="12" y="13" width="16" height="2" fill="#ffffff" opacity="0.1"/>
+            <rect x="14" y="15" width="2" height="2" fill="#2f8f3a" opacity="0.55"/>
+            <rect x="24" y="15" width="2" height="2" fill="#2f8f3a" opacity="0.55"/>
+            <g fill="#101418">
+              <rect x="16" y="17" width="4" height="4"/>
+              <rect x="24" y="17" width="4" height="4"/>
+              <rect x="20" y="21" width="4" height="2"/>
+              <rect x="16" y="23" width="8" height="4"/>
+            </g>
+          </svg></a>
+      <div class="sb-brand min-w-0 flex-1">
+        <p class="font-pixel text-xs text-emerald-300 tracking-wide">MINEBOT</p>
+        <p class="text-[11px] text-slate-500 mt-1.5 truncate">Dashboard v1.0</p>
+      </div>
+      <button id="sb-collapse-btn" type="button" class="sb-collapse-btn w-8 h-8 shrink-0 grid place-items-center rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" title="Collapse sidebar" aria-label="Toggle sidebar" aria-expanded="true">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+      </button>
+    </div>
+
+    <!-- Nav -->
+        <nav class="sb-nav flex-1 px-4 py-5 space-y-1.5 overflow-y-auto">
+      <p class="sb-group-label">Main</p>
+      <a href="/" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-home"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg></span> Dashboard
+      </a>
+      <p class="sb-group-label">World</p>
+      <a href="/map.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-map-2"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" />
+  <path d="M9 4v13" />
+  <path d="M15 7v5.5" />
+  <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879" />
+  <path d="M19 18v.01" />
+</svg></span> 3D Map
+      </a>
+      <a href="/map2d.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M12 3l0 2" />
+  <path d="M12 19l0 2" />
+  <path d="M3 12l2 0" />
+  <path d="M19 12l2 0" />
+</svg></span> 2D Map
+      </a>
+      <p class="sb-group-label">Items</p>
+      <a href="/inventory.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-backpack"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 18v-6a6 6 0 0 1 6 -6h2a6 6 0 0 1 6 6v6a3 3 0 0 1 -3 3h-8a3 3 0 0 1 -3 -3" />
+  <path d="M10 6v-1a2 2 0 1 1 4 0v1" />
+  <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+  <path d="M11 10h2" />
+</svg></span> Inventory
+      </a>
+      <p class="sb-group-label">Intelligence</p>
+      <a href="/ai.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-brain"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+  <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+  <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+  <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+  <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+  <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+</svg></span> AI Control
+      </a>
+      <a href="/commander.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-bolt"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
+</svg></span> Commander
+      </a>
+      <p class="sb-group-label">Tools</p>
+      <a href="/console.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-terminal-2"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" />
+</svg></span> Console
+      </a>
+      <a href="/stats.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Statistics
+      </a>
+      <a href="/building.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg></span> Building
+      </a>
+      <a href="/controls.html" data-nav class="nav-item active">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M2 8a2 2 0 0 1 2 -2h16a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-16a2 2 0 0 1 -2 -2l0 -8" />
+  <path d="M6 12h4m-2 -2v4" />
+  <path d="M15 11l0 .01" />
+  <path d="M18 13l0 .01" />
+</svg></span> Controls
+      </a>
+      <p class="sb-group-label">System</p>
+      <a href="/settings.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Settings
+      </a>
+    </nav>
+
+    <!-- Footer status -->
+    <div class="sb-footer px-4 py-5 border-t border-white/5 shrink-0 space-y-3">
+      <div class="sb-footer-card rounded-xl bg-white/[0.03] border border-white/5 p-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-slate-400">Dashboard server</span>
+          <span id="conn-pill-sidebar" class="text-xs font-bold text-slate-500">○ Offline</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2">Node.js + Express + Socket.io</p>
+      </div>
+      <div class="sb-footer-user rounded-xl bg-white/[0.03] border border-white/5 p-3 flex items-center justify-between gap-2">
+        <span id="user-badge" class="text-xs text-slate-300 truncate">Loading…</span>
+        <button id="logout-btn" class="btn btn-ghost text-xs px-3 py-1.5 shrink-0">
+          <svg class="sb-logout-ico w-0 h-0 overflow-hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+          <span class="sb-logout-txt">Logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile top bar -->
+  <header class="md:hidden fixed top-0 inset-x-0 z-40 h-16 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4">
+    <button id="menu-btn" class="w-10 h-10 grid place-items-center rounded-lg hover:bg-white/5 transition-colors text-slate-300" aria-label="Toggle menu">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <span class="font-pixel text-xs text-emerald-300">MINEBOT</span>
+    <span id="conn-pill-mobile" class="text-xs font-bold text-slate-500">○</span>
+  </header>
+
+  <!-- Mobile sidebar overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden hidden"></div>
+
+  <!-- Main content -->
+  <main class="md:pl-72 pt-16 md:pt-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12">
+
+      <!-- Page header -->
+      <section class="animate-fade-up mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-emerald-400 font-bold">Quick Bot Behaviours</p>
+            <h1 class="mt-2.5 text-3xl lg:text-4xl font-extrabold text-white tracking-tight">Controls</h1>
+            <p class="mt-2.5 text-sm text-slate-400 max-w-2xl leading-relaxed">
+              One-tap behaviours — <span class="text-amber-300 font-semibold">Follow</span> keeps the bot at your side,
+              <span class="text-red-300 font-semibold">Guard</span> defends you, <span class="text-stone-300 font-semibold">Mining</span> digs tunnels,
+              plus <span class="text-indigo-300 font-semibold">Sleep</span> and <span class="text-sky-300 font-semibold">Look</span>.
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="follow-state-badge" class="badge badge-slate shrink-0">loading…</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Behaviour cards: two even columns, every card paired so no space is wasted -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+        <!-- Follow Player -->
+        <section class="animate-fade-up space-y-6" style="animation-delay: 80ms">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-user-heart"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h.5" />
+  <path d="M18 22l3.35 -3.284a2.143 2.143 0 0 0 .005 -3.071a2.242 2.242 0 0 0 -3.129 -.006l-.224 .22l-.223 -.22a2.242 2.242 0 0 0 -3.128 -.006a2.143 2.143 0 0 0 -.006 3.071l3.355 3.296" />
+</svg> Follow Player</h2>
+                <p class="card-sub">The bot follows a player automatically — walking in survival, or teleporting on an operator server.</p>
+              </div>
+              <label class="switch shrink-0" title="Master switch for follow mode">
+                <input id="follow-enabled" type="checkbox" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="p-6 space-y-5">
+
+              <!-- Player to follow -->
+              <div>
+                <label for="follow-player" class="label">Player to follow</label>
+                <div class="input-wrap">
+                  <span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-user"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg></span>
+                  <input id="follow-player" class="input" placeholder="Minecraft player name (case-insensitive)" maxlength="32" autocomplete="off" />
+                </div>
+                <p class="hint">When they move farther than the radius below, the bot follows. When they come back inside it, the bot stops.</p>
+              </div>
+
+              <!-- Mode + radius -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="follow-mode" class="label">Follow mode</label>
+                  <select id="follow-mode" class="input select" style="padding-left:0.9rem">
+                    <option value="survival">Survival — walk to the player</option>
+                    <option value="op">Operator — teleport (/tp)</option>
+                  </select>
+                  <p class="hint">Survival walks and hops over obstacles. Operator instantly /tp's when they leave the radius (needs OP on the server).</p>
+                </div>
+                <div>
+                  <label for="follow-radius" class="label">Follow radius (blocks)</label>
+                  <input id="follow-radius" type="number" class="input" value="5" min="1" max="128" style="padding-left:0.9rem" />
+                  <p class="hint">The bot moves whenever the target is farther than this many blocks away (1–128).</p>
+                </div>
+              </div>
+
+              <div class="border-t border-white/5 pt-5 flex items-center justify-between gap-3">
+                <p id="follow-save-hint" class="text-[11px] text-slate-500">Follow settings persist across bot restarts.</p>
+                <button id="follow-save" class="btn btn-cyan shrink-0"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+  <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M14 4l0 4l-6 0l0 -4" />
+</svg> Save</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live status -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-antenna"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M20 4v8" />
+  <path d="M16 4.5v7" />
+  <path d="M12 5v16" />
+  <path d="M8 5.5v5" />
+  <path d="M4 6v4" />
+  <path d="M20 8h-16" />
+</svg> Live Status</h2>
+                <p class="card-sub">What the follow behaviour is doing right now.</p>
+              </div>
+            </div>
+            <div class="p-6">
+              <div id="follow-live" class="rounded-xl bg-white/[0.03] border border-white/5 p-5 flex items-start gap-4">
+                <span id="follow-live-icon" class="text-2xl select-none"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-moon"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" />
+</svg></span>
+                <div class="min-w-0">
+                  <p id="follow-live-title" class="text-sm font-bold text-white">Follow is off</p>
+                  <p id="follow-live-sub" class="text-xs text-slate-500 mt-1.5 leading-relaxed">Enable it above and save to start following a player.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Guard Player -->
+        <section class="animate-fade-up space-y-6" style="animation-delay: 120ms">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-shield"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+</svg> Guard Player</h2>
+                <p class="card-sub">Follow a player AND fight off threats near them. Same movement as Follow, plus attack filters.</p>
+              </div>
+              <label class="switch shrink-0" title="Master switch for guard mode">
+                <input id="guard-enabled" type="checkbox" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="p-6 space-y-5">
+
+              <!-- Player to guard -->
+              <div>
+                <label for="guard-player" class="label">Player to guard</label>
+                <div class="input-wrap">
+                  <span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-shield"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+</svg></span>
+                  <input id="guard-player" class="input" placeholder="Minecraft player name (case-insensitive)" maxlength="32" autocomplete="off" />
+                </div>
+                <p class="hint">The bot follows them like Follow, and attacks anything the filters allow.</p>
+              </div>
+
+              <!-- Mode + radius + attack range -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label for="guard-mode" class="label">Guard mode</label>
+                  <select id="guard-mode" class="input select" style="padding-left:0.9rem">
+                    <option value="survival">Survival — walk</option>
+                    <option value="op">Operator — /tp</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="guard-radius" class="label">Follow radius</label>
+                  <input id="guard-radius" type="number" class="input" value="5" min="1" max="128" style="padding-left:0.9rem" />
+                </div>
+                <div>
+                  <label for="guard-attack-range" class="label">Attack range</label>
+                  <input id="guard-attack-range" type="number" class="input" value="8" min="2" max="16" style="padding-left:0.9rem" />
+                </div>
+              </div>
+
+              <!-- Attack filters -->
+              <div>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2.5">Attack filters</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <label class="flex items-center justify-between gap-3 cursor-pointer rounded-xl bg-white/[0.03] border border-white/5 px-4 py-3 hover:bg-white/[0.06] transition-colors">
+                    <span class="text-sm text-slate-300"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-skull"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 4c4.418 0 8 3.358 8 7.5c0 1.901 -.755 3.637 -2 4.96l0 2.54a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1v-2.54c-1.245 -1.322 -2 -3.058 -2 -4.96c0 -4.142 3.582 -7.5 8 -7.5" />
+  <path d="M10 17v3" />
+  <path d="M14 17v3" />
+  <path d="M8 11a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M14 11a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+</svg> Hostile mobs</span>
+                    <input id="guard-hostile" type="checkbox" class="w-4 h-4 accent-emerald-500" checked />
+                  </label>
+                  <label class="flex items-center justify-between gap-3 cursor-pointer rounded-xl bg-white/[0.03] border border-white/5 px-4 py-3 hover:bg-white/[0.06] transition-colors">
+                    <span class="text-sm text-slate-300"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 21c.5 -4.5 2.5 -8 7 -10" />
+  <path d="M9 18c6.218 0 10.5 -3.288 11 -12v-2h-4.014c-9 0 -11.986 4 -12 9c0 1 0 3 2 5h3l.014 0" /></svg> Passive mobs</span>
+                    <input id="guard-passive" type="checkbox" class="w-4 h-4 accent-emerald-500" checked />
+                  </label>
+                  <label class="flex items-center justify-between gap-3 cursor-pointer rounded-xl bg-white/[0.03] border border-white/5 px-4 py-3 hover:bg-white/[0.06] transition-colors">
+                    <span class="text-sm text-slate-300"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-user"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg> Players</span>
+                    <input id="guard-players" type="checkbox" class="w-4 h-4 accent-emerald-500" />
+                  </label>
+                </div>
+                <p class="hint">Hostile mobs are attacked on sight. Passive mobs and players are only attacked in retaliation — if they hit the bot or the guarded player. Unchecked = that group is completely ignored (even retaliation).</p>
+              </div>
+
+              <div class="border-t border-white/5 pt-5 flex items-center justify-between gap-3">
+                <p id="guard-save-hint" class="text-[11px] text-slate-500">Guard and Follow cannot run at the same time — saving one turns the other off.</p>
+                <button id="guard-save" class="btn btn-amber shrink-0"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+  <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M14 4l0 4l-6 0l0 -4" />
+</svg> Save</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guard live status -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-shield"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+</svg> Guard Live Status</h2>
+                <p class="card-sub">What the guard behaviour is doing right now.</p>
+              </div>
+            </div>
+            <div class="p-6">
+              <div id="guard-live" class="rounded-xl bg-white/[0.03] border border-white/5 p-5 flex items-start gap-4">
+                <span id="guard-live-icon" class="text-2xl select-none"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-moon"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" />
+</svg></span>
+                <div class="min-w-0">
+                  <p id="guard-live-title" class="text-sm font-bold text-white">Guard is off</p>
+                  <p id="guard-live-sub" class="text-xs text-slate-500 mt-1.5 leading-relaxed">Enable it above and save to start guarding a player.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mining -->
+        <section class="animate-fade-up space-y-6" style="animation-delay: 160ms">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-pick"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 8l-9.383 9.418a2.091 2.091 0 0 0 0 2.967a2.11 2.11 0 0 0 2.976 0l9.407 -9.385" />
+  <path d="M9 3h4.586a1 1 0 0 1 .707 .293l6.414 6.414a1 1 0 0 1 .293 .707v4.586a2 2 0 1 1 -4 0v-3l-5 -5h-3a2 2 0 1 1 0 -4" />
+</svg> Mining</h2>
+                <p class="card-sub">The bot digs a tunnel straight ahead — a level 1×2 tunnel, or a 1:1 staircase descending underground.</p>
+              </div>
+              <label class="switch shrink-0" title="Master switch for mining mode">
+                <input id="mine-enabled" type="checkbox" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="p-6 space-y-5">
+
+              <!-- Mode -->
+              <div>
+                <label for="mine-mode" class="label">Mining shape</label>
+                <select id="mine-mode" class="input select" style="padding-left:0.9rem">
+                  <option value="straight">Straight — level 1×2 tunnel</option>
+                  <option value="stair">Stair — descending staircase (1 down per step)</option>
+                </select>
+                <p class="hint">Straight mines the wall at body height and walks forward. Stair digs the wall and the step below it, descending one block every step — great for reaching ores underground.</p>
+              </div>
+
+              <div class="border-t border-white/5 pt-5 flex items-center justify-between gap-3">
+                <p id="mine-save-hint" class="text-[11px] text-slate-500">Mining stops Follow/Guard while it runs (they share the movement keys).</p>
+                <button id="mine-stop-now" class="btn btn-stop shrink-0">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+                  Stop mining now
+                </button>
+                <button id="mine-save" class="btn btn-blue shrink-0"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+  <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M14 4l0 4l-6 0l0 -4" />
+</svg> Save</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mining live status -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-pick"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 8l-9.383 9.418a2.091 2.091 0 0 0 0 2.967a2.11 2.11 0 0 0 2.976 0l9.407 -9.385" />
+  <path d="M9 3h4.586a1 1 0 0 1 .707 .293l6.414 6.414a1 1 0 0 1 .293 .707v4.586a2 2 0 1 1 -4 0v-3l-5 -5h-3a2 2 0 1 1 0 -4" />
+</svg> Mining Live Status</h2>
+                <p class="card-sub">What the mining loop is doing right now.</p>
+              </div>
+            </div>
+            <div class="p-6">
+              <div id="mine-live" class="rounded-xl bg-white/[0.03] border border-white/5 p-5 flex items-start gap-4">
+                <span id="mine-live-icon" class="text-2xl select-none"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-moon"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" />
+</svg></span>
+                <div class="min-w-0">
+                  <p id="mine-live-title" class="text-sm font-bold text-white">Mining is off</p>
+                  <p id="mine-live-sub" class="text-xs text-slate-500 mt-1.5 leading-relaxed">Enable it above and save to start digging. Bedrock is never mined.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mine a specific block + quick actions -->
+        <section class="animate-fade-up space-y-6" style="animation-delay: 240ms">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-cube"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 16.008v-8.018a1.98 1.98 0 0 0 -1 -1.717l-7 -4.008a2.016 2.016 0 0 0 -2 0l-7 4.008c-.619 .355 -1 1.01 -1 1.718v8.018c0 .709 .381 1.363 1 1.717l7 4.008a2.016 2.016 0 0 0 2 0l7 -4.008c.619 -.355 1 -1.01 1 -1.718" />
+  <path d="M12 22v-10" />
+  <path d="M12 12l8.73 -5.04" />
+  <path d="M3.27 6.96l8.73 5.04" />
+</svg> Mine a Block</h2>
+                <p class="card-sub">One-shot dig: pick any block type and the bot mines the nearest one it can reach.</p>
+              </div>
+            </div>
+            <div class="p-6 space-y-4">
+              <div>
+                <label for="mine-block-input" class="label">Block to mine</label>
+                <div class="input-wrap">
+                  <span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-cube"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 16.008v-8.018a1.98 1.98 0 0 0 -1 -1.717l-7 -4.008a2.016 2.016 0 0 0 -2 0l-7 4.008c-.619 .355 -1 1.01 -1 1.718v8.018c0 .709 .381 1.363 1 1.717l7 4.008a2.016 2.016 0 0 0 2 0l7 -4.008c.619 -.355 1 -1.01 1 -1.718" />
+  <path d="M12 22v-10" />
+  <path d="M12 12l8.73 -5.04" />
+  <path d="M3.27 6.96l8.73 5.04" />
+</svg></span>
+                  <input id="mine-block-input" class="input" placeholder="e.g. diamond_ore, stone, oak_log" maxlength="64" list="mine-block-list" autocomplete="off" />
+                </div>
+                <datalist id="mine-block-list">
+                  <option value="stone"></option>
+                  <option value="cobblestone"></option>
+                  <option value="deepslate"></option>
+                  <option value="dirt"></option>
+                  <option value="sand"></option>
+                  <option value="gravel"></option>
+                  <option value="coal_ore"></option>
+                  <option value="iron_ore"></option>
+                  <option value="gold_ore"></option>
+                  <option value="diamond_ore"></option>
+                  <option value="redstone_ore"></option>
+                  <option value="lapis_ore"></option>
+                  <option value="emerald_ore"></option>
+                  <option value="oak_log"></option>
+                  <option value="birch_log"></option>
+                  <option value="spruce_log"></option>
+                  <option value="jungle_log"></option>
+                  <option value="acacia_log"></option>
+                  <option value="dark_oak_log"></option>
+                  <option value="cherry_log"></option>
+                  <option value="oak_planks"></option>
+                  <option value="glass"></option>
+                  <option value="obsidian"></option>
+                </datalist>
+                <p class="hint">Type any Minecraft block name — the bot digs the nearest match within 5 blocks.</p>
+              </div>
+              <button id="mine-block-btn" class="btn btn-blue w-full"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-pick"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 8l-9.383 9.418a2.091 2.091 0 0 0 0 2.967a2.11 2.11 0 0 0 2.976 0l9.407 -9.385" />
+  <path d="M9 3h4.586a1 1 0 0 1 .707 .293l6.414 6.414a1 1 0 0 1 .293 .707v4.586a2 2 0 1 1 -4 0v-3l-5 -5h-3a2 2 0 1 1 0 -4" />
+</svg> Mine it now</button>
+              <p id="mine-block-status" class="text-xs text-slate-500 leading-relaxed">No block mined yet.</p>
+            </div>
+          </div>
+
+          <!-- Quick actions -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-target"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+</svg> Quick actions</h2>
+                <p class="card-sub">Follow and Guard are applied the moment you save.</p>
+              </div>
+            </div>
+            <div class="p-6 space-y-3">
+              <button id="follow-stop-now" class="btn btn-stop w-full">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+                Stop following now
+              </button>
+              <button id="guard-stop-now" class="btn btn-stop w-full">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+                Stop guarding now
+              </button>
+              <p class="hint mt-2">Turn the behaviour off without touching your saved settings.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Bottom row: Sleep | Look at players -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+        <!-- Sleep -->
+        <section class="animate-fade-up" style="animation-delay: 200ms">
+          <div class="card h-full">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-moon"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" />
+</svg> Sleep</h2>
+                <p class="card-sub">Make the bot go to bed — it scans for the nearest bed, walks over and sleeps.</p>
+              </div>
+            </div>
+            <div class="p-6 flex flex-col space-y-3">
+              <div class="grid grid-cols-2 gap-3">
+                <button id="sleep-btn" class="btn btn-primary">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                  Sleep
+                </button>
+                <button id="wake-btn" class="btn btn-ghost">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                  Wake
+                </button>
+              </div>
+              <p id="sleep-status" class="text-xs text-slate-500 leading-relaxed">Sleep only works at night (or during a thunderstorm) and when no monsters are nearby — the bot will tell you why if it can't.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Look at players -->
+        <section class="animate-fade-up" style="animation-delay: 220ms">
+          <div class="card h-full">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+</svg> Look at Players</h2>
+                <p class="card-sub">Turn the bot's head toward the nearest player — a fun idle behaviour, no movement involved.</p>
+              </div>
+              <label class="switch shrink-0" title="Look at the nearest player">
+                <input id="look-enabled" type="checkbox" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <div class="p-6 flex flex-col">
+              <p class="hint">When on, the bot looks at the nearest player within 32 blocks every second. It never walks — for idle moments: while Follow or Guard is active they own the bot's head instead, and it pauses during Sleep. Saved instantly.</p>
+              <div class="flex justify-end mt-4">
+                <button id="look-save" class="btn btn-purple shrink-0"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+  <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M14 4l0 4l-6 0l0 -4" />
+</svg> Save</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="text-center text-xs text-slate-600 pt-8 pb-4">
+        Controls run live on the bot · settings persist across restarts <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M2 8a2 2 0 0 1 2 -2h16a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-16a2 2 0 0 1 -2 -2l0 -8" />
+  <path d="M6 12h4m-2 -2v4" />
+  <path d="M15 11l0 .01" />
+  <path d="M18 13l0 .01" />
+</svg>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Toasts -->
+  <div id="toasts" class="fixed top-5 right-5 z-50 space-y-3 w-80 max-w-[calc(100vw-2.5rem)] pointer-events-none"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/icons.js"></script>
+  <script src="/js/controls.js"></script>
+  <script src="/js/topbar.js"></script>
+</body>
+</html>

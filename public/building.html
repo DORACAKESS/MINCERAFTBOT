@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building — MineBot</title>
+  <link rel="stylesheet" href="/css/tailwind.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2334d399%22 stroke-width=%222%22><path d=%22M6 3h12l4 6.5L12 21 2 9.5 6 3z%22/><path d=%22M2 9.5h20M6 3l4 6.5L12 21M18 3l-4 6.5L12 21%22/></svg>" />
+  </head>
+<body class="bg-[#070b12] text-slate-200 font-body antialiased min-h-screen">
+  <script>try{if(localStorage.getItem('mb-sb')==='1')document.body.classList.add('sb-collapsed')}catch(e){}</script>
+
+  <!-- Background decoration -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="bg-grid absolute inset-0"></div>
+    <div class="bg-glow absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"></div>
+    <div class="bg-glow absolute -bottom-52 -right-40 w-[700px] h-[700px] rounded-full" style="animation-delay: 4s; animation-duration: 18s;"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-out flex flex-col bg-slate-900/70 backdrop-blur-xl border-r border-white/5">
+    <!-- Logo -->
+    <div class="sb-header flex items-center gap-3 px-6 h-20 border-b border-white/5 shrink-0">
+      <a href="/" class="sb-logo w-10 h-10 shrink-0 grid place-items-center rounded-xl bg-[#07130c] border border-emerald-400/25 shadow-lg shadow-emerald-500/15 select-none" aria-label="MineBot dashboard home"><svg class="w-8 h-8" viewBox="0 0 40 40" aria-hidden="true">
+            <defs>
+              <linearGradient id="sb-bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0c2015"/><stop offset="1" stop-color="#04100a"/>
+              </linearGradient>
+              <filter id="sb-glow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect x="0.5" y="0.5" width="39" height="39" rx="9" fill="url(#sb-bg)" stroke="rgba(57,255,20,0.3)" stroke-width="1"/>
+            <!-- neon shield -->
+            <path d="M20 8.5 L29.5 12 V19.5 C29.5 27 25.5 32 20 34 C14.5 32 10.5 27 10.5 19.5 V12 Z" fill="rgba(57,255,20,0.07)" stroke="#39ff14" stroke-width="1.5" filter="url(#sb-glow)"/>
+            <path d="M20 8.5 L29.5 12 V19.5 C29.5 27 25.5 32 20 34 C14.5 32 10.5 27 10.5 19.5 V12 Z" fill="none" stroke="#39ff14" stroke-width="1" stroke-linejoin="round"/>
+            <!-- headphones -->
+            <path d="M11 15.5 A 9.5 9.5 0 0 1 29 15.5" fill="none" stroke="#252a2f" stroke-width="3.2" stroke-linecap="round"/>
+            <rect x="8" y="15" width="4.5" height="11" rx="2.2" fill="#272c31" stroke="#43494f" stroke-width="0.8"/>
+            <rect x="27.5" y="15" width="4.5" height="11" rx="2.2" fill="#272c31" stroke="#43494f" stroke-width="0.8"/>
+            <path d="M30.6 19 C33.4 21.2 33.4 24 31.6 26.4" fill="none" stroke="#2b3035" stroke-width="2.2" stroke-linecap="round"/>
+            <rect x="30.5" y="26" width="2.8" height="2.4" rx="1.2" fill="#39ff14" filter="url(#sb-glow)"/>
+            <!-- voxel head (creeper-style face) -->
+            <rect x="12" y="13" width="16" height="14" fill="#3fae49" stroke="#1f7a2c" stroke-width="0.7"/>
+            <rect x="12" y="13" width="16" height="2" fill="#ffffff" opacity="0.1"/>
+            <rect x="14" y="15" width="2" height="2" fill="#2f8f3a" opacity="0.55"/>
+            <rect x="24" y="15" width="2" height="2" fill="#2f8f3a" opacity="0.55"/>
+            <g fill="#101418">
+              <rect x="16" y="17" width="4" height="4"/>
+              <rect x="24" y="17" width="4" height="4"/>
+              <rect x="20" y="21" width="4" height="2"/>
+              <rect x="16" y="23" width="8" height="4"/>
+            </g>
+          </svg></a>
+      <div class="sb-brand min-w-0 flex-1">
+        <p class="font-pixel text-xs text-emerald-300 tracking-wide">MINEBOT</p>
+        <p class="text-[11px] text-slate-500 mt-1.5 truncate">Dashboard v1.0</p>
+      </div>
+      <button id="sb-collapse-btn" type="button" class="sb-collapse-btn w-8 h-8 shrink-0 grid place-items-center rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors" title="Collapse sidebar" aria-label="Toggle sidebar" aria-expanded="true">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+      </button>
+    </div>
+
+    <!-- Nav -->
+        <nav class="sb-nav flex-1 px-4 py-5 space-y-1.5 overflow-y-auto">
+      <p class="sb-group-label">Main</p>
+      <a href="/" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-home"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg></span> Dashboard
+      </a>
+      <p class="sb-group-label">World</p>
+      <a href="/map.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-map-2"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" />
+  <path d="M9 4v13" />
+  <path d="M15 7v5.5" />
+  <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879" />
+  <path d="M19 18v.01" />
+</svg></span> 3D Map
+      </a>
+      <a href="/map2d.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M12 3l0 2" />
+  <path d="M12 19l0 2" />
+  <path d="M3 12l2 0" />
+  <path d="M19 12l2 0" />
+</svg></span> 2D Map
+      </a>
+      <p class="sb-group-label">Items</p>
+      <a href="/inventory.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-backpack"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 18v-6a6 6 0 0 1 6 -6h2a6 6 0 0 1 6 6v6a3 3 0 0 1 -3 3h-8a3 3 0 0 1 -3 -3" />
+  <path d="M10 6v-1a2 2 0 1 1 4 0v1" />
+  <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+  <path d="M11 10h2" />
+</svg></span> Inventory
+      </a>
+      <p class="sb-group-label">Intelligence</p>
+      <a href="/ai.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-brain"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+  <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+  <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+  <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+  <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+  <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+</svg></span> AI Control
+      </a>
+      <a href="/commander.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-bolt"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
+</svg></span> Commander
+      </a>
+      <p class="sb-group-label">Tools</p>
+      <a href="/console.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-terminal-2"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12" />
+</svg></span> Console
+      </a>
+      <a href="/stats.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg></span> Statistics
+      </a>
+      <a href="/building.html" data-nav class="nav-item active">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg></span> Building
+      </a>
+      <a href="/controls.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M2 8a2 2 0 0 1 2 -2h16a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-16a2 2 0 0 1 -2 -2l0 -8" />
+  <path d="M6 12h4m-2 -2v4" />
+  <path d="M15 11l0 .01" />
+  <path d="M18 13l0 .01" />
+</svg></span> Controls
+      </a>
+      <p class="sb-group-label">System</p>
+      <a href="/settings.html" data-nav class="nav-item">
+        <span class="text-base"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg></span> Settings
+      </a>
+    </nav>
+
+    <!-- Footer status -->
+    <div class="sb-footer px-4 py-5 border-t border-white/5 shrink-0 space-y-3">
+      <div class="sb-footer-card rounded-xl bg-white/[0.03] border border-white/5 p-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-slate-400">Dashboard server</span>
+          <span id="conn-pill-sidebar" class="text-xs font-bold text-slate-500">○ Offline</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2">Node.js + Express + Socket.io</p>
+      </div>
+      <div class="sb-footer-user rounded-xl bg-white/[0.03] border border-white/5 p-3 flex items-center justify-between gap-2">
+        <span id="user-badge" class="text-xs text-slate-300 truncate">Loading…</span>
+        <button id="logout-btn" class="btn btn-ghost text-xs px-3 py-1.5 shrink-0">
+          <svg class="sb-logout-ico w-0 h-0 overflow-hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+          <span class="sb-logout-txt">Logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile top bar -->
+  <header class="md:hidden fixed top-0 inset-x-0 z-40 h-16 bg-slate-900/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4">
+    <button id="menu-btn" class="w-10 h-10 grid place-items-center rounded-lg hover:bg-white/5 transition-colors text-slate-300" aria-label="Toggle menu">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <span class="font-pixel text-xs text-emerald-300">MINEBOT</span>
+    <span id="conn-pill-mobile" class="text-xs font-bold text-slate-500">○</span>
+  </header>
+
+  <!-- Mobile sidebar overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden hidden"></div>
+
+  <!-- Main content -->
+  <main class="md:pl-72 pt-16 md:pt-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12">
+
+      <!-- Page header -->
+      <section class="animate-fade-up mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-emerald-400 font-bold">Schematic Library + In-Game Builder</p>
+            <h1 class="mt-2.5 text-3xl lg:text-4xl font-extrabold text-white tracking-tight">Building</h1>
+            <p class="mt-2.5 text-sm text-slate-400 max-w-2xl leading-relaxed">
+              Upload <code class="text-emerald-400">.schematic</code>, <code class="text-emerald-400">.schem</code> or <code class="text-emerald-400">.litematic</code> builds,
+              preview them in 3D, check the materials, and let the bot construct them —
+              <span class="text-amber-300 font-semibold">Survival</span> (from inventory + chests),
+              <span class="text-sky-300 font-semibold">Creative</span> (auto-give) or
+              <span class="text-rose-300 font-semibold">Operator</span> (<code class="text-rose-200">/fill</code> + <code class="text-rose-200">/setblock</code>).
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="build-state-badge" class="badge badge-slate shrink-0">library empty</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+        <!-- Left: upload + library -->
+        <section class="animate-fade-up lg:col-span-2" style="animation-delay: 80ms">
+          <!-- Upload -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-upload"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+  <path d="M7 9l5 -5l5 5" />
+  <path d="M12 4l0 12" />
+</svg> Upload a build</h2>
+                <p class="card-sub">Sponge / MCEdit .schematic + Litematica .litematic.</p>
+              </div>
+            </div>
+            <div class="p-6 space-y-4">
+              <div>
+                <label class="label">Build name</label>
+                <div class="input-wrap">
+                  <span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-tag"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3" />
+</svg></span>
+                  <input id="build-name" class="input" placeholder="e.g. Starter House v2" maxlength="60" autocomplete="off" />
+                </div>
+              </div>
+              <div>
+                <label class="label">File</label>
+                <div class="flex items-center gap-3">
+                  <label class="btn btn-ghost cursor-pointer flex-1 text-sm px-4 py-2.5 justify-center" for="build-file">
+                    <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-folder"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
+</svg> Choose file…
+                  </label>
+                  <input id="build-file" type="file" accept=".schem,.schematic,.litematic" class="hidden" />
+                </div>
+                <p id="build-file-name" class="hint mt-2">No file selected.</p>
+              </div>
+              <button id="build-upload" class="btn btn-blue w-full justify-center"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+  <path d="M7 9l5 -5l5 5" />
+  <path d="M12 4l0 12" /></svg> Upload</button>
+              <p id="build-upload-hint" class="hint">Admins upload builds. Everyone can preview them.</p>
+            </div>
+          </div>
+
+          <!-- Library -->
+          <div class="card mt-6">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-books"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 5a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M9 5a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M5 8h4" />
+  <path d="M9 16h4" />
+  <path d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041" />
+  <path d="M14 9l4 -1" />
+  <path d="M16 16l3.923 -.98" />
+</svg> Build library</h2>
+                <p class="card-sub">Select one to see materials + build it.</p>
+              </div>
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="input-wrap">
+                <span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg></span>
+                <input id="build-search" class="input" placeholder="Search builds…" autocomplete="off" />
+              </div>
+              <div id="build-list" class="space-y-2">
+                <p class="text-xs text-slate-500 py-2">Upload a build to get started.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: selected build details + build controls -->
+        <section class="animate-fade-up lg:col-span-3" style="animation-delay: 160ms">
+          <div id="build-empty" class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg> No build selected</h2>
+                <p class="card-sub">Pick a build from the library to see its materials and build controls.</p>
+              </div>
+            </div>
+            <div class="p-6 text-sm text-slate-400 leading-relaxed">
+              <p><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
+  <path d="M9.7 17l4.6 0" />
+</svg> <b class="text-slate-200">How it works:</b></p>
+              <ul class="mt-2 space-y-1.5 list-disc pl-5 text-slate-400">
+                <li>Upload a build file → it is parsed and stored in your library.</li>
+                <li>Click a build → the required materials appear (with icons + counts).</li>
+                <li><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+</svg> <b class="text-slate-200">Preview</b> renders the build in 3D so you know exactly what the bot will place.</li>
+                <li><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg> <b class="text-slate-200">Build</b> picks a mode, an origin (where the build starts), and the bot does the rest.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="build-detail" class="hidden space-y-6">
+            <!-- Materials -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title" id="detail-title">—</h2>
+                  <p class="card-sub" id="detail-sub">—</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button id="build-preview" class="btn btn-cyan text-xs px-3 py-2"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+</svg> Preview</button>
+                  <button id="build-rename" class="btn btn-ghost text-xs px-3 py-2" title="Rename"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+  <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415" />
+  <path d="M16 5l3 3" />
+</svg></button>
+                  <button id="build-delete" class="btn btn-ghost text-xs px-3 py-2 text-rose-400" title="Delete"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 7l16 0" />
+  <path d="M10 11l0 6" />
+  <path d="M14 11l0 6" />
+  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+</svg></button>
+                </div>
+              </div>
+              <div class="p-6">
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-3">Required materials</p>
+                <div id="detail-materials" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto pr-1"></div>
+              </div>
+            </div>
+
+            <!-- Build controls -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg> Build controls</h2>
+                  <p class="card-sub">Position the bot near the origin point before building.</p>
+                </div>
+              </div>
+              <div class="p-6 space-y-5">
+                <!-- Mode -->
+                <div>
+                  <label class="label">Mode</label>
+                  <div class="grid grid-cols-3 gap-2" id="build-modes">
+                    <button class="mode-btn btn btn-ghost text-xs py-2.5" data-mode="survival"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-cube"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M21 16.008v-8.018a1.98 1.98 0 0 0 -1 -1.717l-7 -4.008a2.016 2.016 0 0 0 -2 0l-7 4.008c-.619 .355 -1 1.01 -1 1.718v8.018c0 .709 .381 1.363 1 1.717l7 4.008a2.016 2.016 0 0 0 2 0l7 -4.008c.619 -.355 1 -1.01 1 -1.718" />
+  <path d="M12 22v-10" />
+  <path d="M12 12l8.73 -5.04" />
+  <path d="M3.27 6.96l8.73 5.04" />
+</svg> Survival</button>
+                    <button class="mode-btn btn btn-ghost text-xs py-2.5" data-mode="creative"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-sparkles"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6" />
+</svg> Creative</button>
+                    <button class="mode-btn btn btn-ghost text-xs py-2.5" data-mode="operator"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-tool"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 10h3v-3l-3.5 -3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1 -3 3l-6 -6a6 6 0 0 1 -8 -8l3.5 3.5" />
+</svg> Operator</button>
+                  </div>
+                  <p id="build-mode-hint" class="hint mt-2">Survival uses materials from the bot's inventory (plus chests).</p>
+                </div>
+
+                <!-- Speed -->
+                <div>
+                  <label class="label">Build speed</label>
+                  <div class="grid grid-cols-4 gap-2" id="build-speed">
+                    <button class="speed-btn btn btn-ghost text-xs py-2.5" data-speed="400" title="400 ms / block"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M13.41 10.59l2.59 -2.59" />
+  <path d="M7 12a5 5 0 0 1 5 -5" /></svg> Slow</button>
+                    <button class="speed-btn btn btn-ghost text-xs py-2.5" data-speed="160" title="160 ms / block"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-walk"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M7 21l3 -4" />
+  <path d="M16 21l-2 -4l-3 -3l1 -6" />
+  <path d="M6 12l2 -3l4 -1l3 3l3 1" />
+</svg> Normal</button>
+                    <button class="speed-btn btn btn-ghost text-xs py-2.5" data-speed="60" title="60 ms / block"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-run"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M11.007 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M4 17l5 1l.75 -1.5" />
+  <path d="M15 21v-4l-4 -3l1 -6" />
+  <path d="M7 12v-3l5 -1l3 3l3 1" />
+</svg> Fast</button>
+                    <button class="speed-btn btn btn-ghost text-xs py-2.5" data-speed="12" title="12 ms / block"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-bolt"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
+</svg> Turbo</button>
+                  </div>
+                  <p class="hint mt-2">Turbo can cause skipped blocks on laggy servers — start Slow/Normal on a new server.</p>
+                </div>
+
+                <!-- Verify -->
+                <div class="rounded-xl bg-white/[0.03] border border-white/5 p-4 flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-sm font-bold text-slate-200"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M9 12l2 2l4 -4" />
+</svg> Verify after build</p>
+                    <p class="text-[11px] text-slate-500">Scans the build, fixes mistakes and re-checks until it passes (max 3 passes).</p>
+                  </div>
+                  <label class="switch shrink-0">
+                    <input id="build-verify" type="checkbox" checked />
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+
+                <!-- Origin -->
+                <div>
+                  <label class="label">Origin (x y z) — where the build starts</label>
+                  <div class="grid grid-cols-4 gap-2">
+                    <div class="input-wrap"><span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" />
+</svg></span><input id="origin-x" class="input" type="number" placeholder="x" /></div>
+                    <div class="input-wrap"><span class="input-icon"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 5l0 14" />
+  <path d="M18 11l-6 -6" />
+  <path d="M6 11l6 -6" /></svg></span><input id="origin-y" class="input" type="number" placeholder="y" /></div>
+                    <div class="input-wrap"><span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M12 3l0 2" />
+  <path d="M12 19l0 2" />
+  <path d="M3 12l2 0" />
+  <path d="M19 12l2 0" />
+</svg></span><input id="origin-z" class="input" type="number" placeholder="z" /></div>
+                    <button id="origin-use-bot" class="btn btn-ghost text-xs px-2"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-target"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+</svg> Bot pos</button>
+                  </div>
+                </div>
+
+                <!-- Chest supply (survival) -->
+                <div id="chest-row" class="rounded-xl bg-white/[0.03] border border-white/5 p-4 space-y-3">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <p class="text-sm font-bold text-slate-200"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+  <path d="M12 12l8 -4.5" />
+  <path d="M12 12l0 9" />
+  <path d="M12 12l-8 -4.5" /></svg> Chest supply</p>
+                      <p class="text-[11px] text-slate-500">Pull missing materials from a chest.</p>
+                    </div>
+                    <label class="switch shrink-0">
+                      <input id="chest-enabled" type="checkbox" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2" id="chest-config">
+                    <div class="input-wrap"><span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" />
+</svg></span><input id="chest-x" class="input" type="number" placeholder="chest x" /></div>
+                    <div class="input-wrap"><span class="input-icon"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-compass"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M12 3l0 2" />
+  <path d="M12 19l0 2" />
+  <path d="M3 12l2 0" />
+  <path d="M19 12l2 0" />
+</svg></span><input id="chest-z" class="input" type="number" placeholder="chest z" /></div>
+                    <div class="input-wrap col-span-2"><span class="input-icon"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 5l0 14" />
+  <path d="M18 11l-6 -6" />
+  <path d="M6 11l6 -6" /></svg></span><input id="chest-y" class="input" type="number" placeholder="chest y" /></div>
+                    <label class="col-span-2 flex items-center gap-2.5 text-xs text-slate-400 cursor-pointer select-none">
+                      <input id="chest-nearest" type="checkbox" class="accent-emerald-400" checked />
+                      Find the nearest chest automatically (leave coordinates empty)
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Progress -->
+                <div id="build-progress-wrap" class="hidden">
+                  <div class="flex items-center justify-between mb-2">
+                    <p id="build-progress-msg" class="text-xs text-slate-400">Preparing…</p>
+                    <span id="build-progress-count" class="text-[11px] text-slate-500 font-mono">0 / 0</span>
+                  </div>
+                  <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                    <div id="build-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-300" style="width:0%"></div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <button id="build-start" class="btn btn-purple"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg> Start build</button>
+                  <button id="build-stop" class="btn btn-ghost text-rose-400 hidden"><svg class="tb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 7a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -10" /></svg> Stop</button>
+                  <button id="build-give" class="btn btn-ghost"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-gift"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 9a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2" />
+  <path d="M12 8l0 13" />
+  <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7" />
+  <path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5" />
+</svg> Get items</button>
+                </div>
+                <p id="build-note" class="hint">Operator + Creative modes need the bot to be an operator on the server (/give, /fill, /setblock).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="text-center text-xs text-slate-600 pt-8 pb-4">
+        Schematics are parsed locally · builds are placed by the bot in-game <svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-building-skyscraper"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 21l18 0" />
+  <path d="M5 21v-14l8 -4v18" />
+  <path d="M19 21v-10l-6 -4" />
+  <path d="M9 9l0 .01" />
+  <path d="M9 12l0 .01" />
+  <path d="M9 15l0 .01" />
+  <path d="M9 18l0 .01" />
+</svg>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Toasts -->
+  <div id="toasts" class="fixed top-5 right-5 z-50 space-y-3 w-80 max-w-[calc(100vw-2.5rem)] pointer-events-none"></div>
+
+  <!-- 3D Preview overlay -->
+  <div id="preview-overlay" class="hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-6xl h-[85vh] rounded-2xl bg-slate-950 border border-white/10 overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-white/5 shrink-0">
+        <div>
+          <p id="preview-title" class="text-sm font-extrabold text-white">Preview</p>
+          <p id="preview-sub" class="text-[11px] text-slate-500">Drag to orbit · scroll to zoom</p>
+        </div>
+        <button id="preview-close" class="btn btn-ghost text-xs px-3 py-2"><svg class="tb-ico"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" />
+</svg> Close</button>
+      </div>
+      <div id="preview-canvas" class="flex-1 relative">
+        <p id="preview-loading" class="absolute inset-0 grid place-items-center text-sm text-slate-500">Loading 3D preview…</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/icons.js"></script>
+  <script src="/js/building.js"></script>
+  <script src="/js/topbar.js"></script>
+</body>
+</html>

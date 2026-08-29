@@ -1,0 +1,26 @@
+[
+  {
+    "id": "admin",
+    "username": "admin",
+    "passwordHash": "b7b464ab4bb9ae46601b585c869faefd:0e5facb63845c7e831c8f108e432a81afa2929979686a99b579e87d509db300b6f64f1bae066a1b27f9bd9120b231ec38b6d37c7bb905b3f1ffcee2e55ba9d33",
+    "role": "admin",
+    "passkeys": [
+      {
+        "id": "LeDW3KfhfPVXYKjAstpK4jQdSw0yhsFb7fkZytDxU7M",
+        "publicKey": "pQECAyYgASFYIAghXGtNDKW4IvLX4C3VgUf5zuMdFG_BiZYQQU5t_u8tIlggCFiltBx-CZBQqok7Yf5mAWGVtAYvfaLOlfpxXE5X3yw",
+        "counter": 3,
+        "transports": [
+          "internal"
+        ],
+        "name": "Passkey 1",
+        "createdAt": "2026-08-03T19:46:13.257Z"
+      }
+    ]
+  },
+  {
+    "id": "guest",
+    "username": "guest",
+    "passwordHash": "8a6f40ba7a2815e6e07942f140cdfee5:4ebe98dc59a251dd976b296f7aef83fc704c064783a51fc6d5a76a1c7b6126f884f376d40120160ad278f503474e6031d4ea2c7a5f92a709be771f0f9589e98d",
+    "role": "guest"
+  }
+]

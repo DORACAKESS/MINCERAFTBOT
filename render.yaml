@@ -1,0 +1,22 @@
+# Render Blueprint — Minecraft Bot Dashboard
+# Create a free web service on Render from this file, or create a new
+# "Web Service" manually and point it at this repo (see README.md).
+services:
+  - type: web
+    name: minecraft-bot-dashboard
+    runtime: node
+    plan: free
+    # npm ci is strict: it installs EXACTLY what package-lock.json pins
+    # (mineflayer 4.37.1 + the verified prismarine-* stack) and fails the
+    # build if the lockfile ever drifts from package.json — no silent
+    # upgrades that can break the bot.
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Skips dev-only dependencies (tailwindcss) at install — the compiled
+      # CSS is committed, so the runtime never needs them.
+      - key: NODE_ENV
+        value: production

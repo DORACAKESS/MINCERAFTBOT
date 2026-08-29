@@ -1,0 +1,59 @@
+{
+  "botName": "SilentFox59",
+  "serverIp": "play.piemc.fun",
+  "serverPort": 2010,
+  "version": "1.12.2",
+  "auth": "offline",
+  "loginEnabled": false,
+  "loginPassword": "",
+  "loginAutoDetect": false,
+  "loginDelaySeconds": 5,
+  "serverHistory": [
+    {
+      "ip": "play.piemc.fun",
+      "port": 2010,
+      "version": "1.12.2",
+      "lastUsed": "2026-08-29T09:37:51.232Z"
+    },
+    {
+      "ip": "play.piemc.fun",
+      "port": 32708,
+      "version": "1.21.11",
+      "lastUsed": "2026-08-29T09:36:45.660Z"
+    },
+    {
+      "ip": "STAR_LITE100.aternos.me",
+      "port": 32708,
+      "version": "1.21.11",
+      "lastUsed": "2026-08-08T14:55:50.397Z"
+    },
+    {
+      "ip": "testcuboid.play.hosting",
+      "port": 25565,
+      "version": "1.21.11",
+      "lastUsed": "2026-08-06T17:48:15.742Z"
+    }
+  ],
+  "autoDropEnabled": false,
+  "autoDropItem": "",
+  "autoEatEnabled": false,
+  "autoEatThreshold": 10,
+  "autoToolEnabled": false,
+  "autoArmorEnabled": false,
+  "followEnabled": false,
+  "followPlayer": "Doraemon",
+  "followMode": "survival",
+  "followRadius": 5,
+  "guardEnabled": false,
+  "guardPlayer": "Doraemon",
+  "guardMode": "survival",
+  "guardRadius": 5,
+  "guardAttackRange": 8,
+  "guardHostile": true,
+  "guardPassive": true,
+  "guardPlayers": true,
+  "lookAtPlayers": true,
+  "miningEnabled": false,
+  "miningMode": "straight",
+  "savedAt": "2026-08-29T09:37:51.215Z"
+}
